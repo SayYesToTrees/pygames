@@ -8,8 +8,6 @@ from OpenGL.GL import *
 from OpenGL.GLU import *
 
 
-
-
 class Game():
     def __init__(self, size=(1920, 1080)):
         # set up pygame
