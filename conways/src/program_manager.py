@@ -42,6 +42,7 @@ Program = namedtuple("Program", ["name", "shaders"])
 
 def compile_shader_program(program: Program):
     compiled_shaders = []
+    id = glCreateProgram()
     for shader in program.shaders:
         with open(glsl_dir + program.name + '/' + shader, 'r') as file:
             shader_type = None
@@ -53,10 +54,7 @@ def compile_shader_program(program: Program):
                 case 'geom': shader_type = GL_GEOMETRY_SHADER
                 case 'comp': shader_type = GL_COMPUTE_SHADER
                 case _: raise Exception("shader ext not matched")
-            compiled_shaders.append(compile_shader(shader_type, file.readlines()))
-    id = glCreateProgram()
-    for shader in compiled_shaders:
-        glAttachShader(id, shader)
+            glAttachShader(id, compile_shader(shader_type, file.readlines()))
     glLinkProgram(id)
     result = glGetProgramiv(id, GL_LINK_STATUS)
     if result != GL_TRUE:
@@ -73,5 +71,6 @@ def build_shader_dirs():
     for dname in dirnames:
         shaders = [shader_file.name for shader_file in os.scandir(glsl_dir + dname.name)]
         programs[dname.name] = compile_shader_program(Program(dname.name, shaders))
+
 
     return programs
