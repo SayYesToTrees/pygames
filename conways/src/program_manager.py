@@ -68,16 +68,10 @@ def compile_shader_program(program: Program):
 
 
 def build_shader_dirs():
-    program_pkgs = []
+    programs = {}
     dirnames = os.scandir(glsl_dir)
     for dname in dirnames:
         shaders = [shader_file.name for shader_file in os.scandir(glsl_dir + dname.name)]
-        prog = Program(dname.name, shaders)
-        program_pkgs.append(prog)
-
-    programs = {}
-    for pkg in program_pkgs:
-        print(pkg.name)
-        programs[pkg.name] = compile_shader_program(pkg)
+        programs[dname.name] = compile_shader_program(Program(dname.name, shaders))
 
     return programs
