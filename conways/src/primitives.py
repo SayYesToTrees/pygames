@@ -13,7 +13,7 @@ Dimension = namedtuple("Program", "w h")
 
 
 class Primitive(object):
-    """Base class for other primitives."""
+    """class for creating primitives."""
 
     def __init__(
         self,
