@@ -2,6 +2,7 @@
 import pygame as pg
 from pygame.locals import QUIT, KEYDOWN, K_ESCAPE
 import program_manager as pm
+import primitives
 import numpy as np
 
 from OpenGL.GL import *
@@ -25,8 +26,11 @@ class Game():
         # select shader program
         shaders = pm.build_shader_dirs()
         self.shader = shaders['default']
-
-        self.triangle = Triangle()
+        verts = [[-0.5, -0.5, 0], [0.5, -0.5, 0], [0, 0.5, 0]]
+        self.triangle = primitives.Primitive(vertices=verts, draw_mode=GL_TRIANGLES)
+        self.triangle.get_vao()
+        self.triangle.get_vbo()
+        self.triangle.enable_vertex_atribute(0, 3, GL_FLOAT, GL_FALSE, 12, ctypes.c_void_p(0))
 
     def handle_input(self):
         for event in pg.event.get():
@@ -46,35 +50,6 @@ class Game():
             self.triangle.draw()
             pg.display.flip()
 
-class Triangle():
-
-    def __init__(self):
-        # specify verticies
-        verticies = (
-            -0.5, -0.5, 0.0,
-            0.5, -0.5, 0.0,
-            0.0, 0.5, 0.0
-        )
-        verticies = np.array(verticies, dtype=np.float32)
-        
-        # create a vertex array object
-        self.vao = glGenVertexArrays(1)
-        glBindVertexArray(self.vao)
-
-        # create a vertex buffer object
-        self.vbo = glGenBuffers(1)
-        glBindBuffer(GL_ARRAY_BUFFER, self.vbo)
-        glBufferData(GL_ARRAY_BUFFER, verticies.nbytes, verticies, GL_STATIC_DRAW)
-
-        # enable vertex attributes
-        glEnableVertexAttribArray(0)
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 12, ctypes.c_void_p(0))
-
-    def draw(self):
-        # bind the vao we made
-        glBindVertexArray(self.vao)
-        # and draw the triangle
-        glDrawArrays(GL_TRIANGLES, 0, 3)
 
 if __name__ == '__main__':
     game = Game()

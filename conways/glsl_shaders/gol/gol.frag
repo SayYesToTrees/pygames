@@ -1,7 +1,5 @@
 #version 330 core
-// Not my code. copied from this great repo https://github.com/skeeto/webgl-game-of-life/ 
 layout (location = 0) out vec4 fragColor;
-
 uniform sampler2D state;
 uniform vec2 scale;
 
