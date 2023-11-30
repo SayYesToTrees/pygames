@@ -13,7 +13,7 @@ Dimension = namedtuple("Program", "w h")
 
 
 class Primitive(object):
-    """Base class for other primitives."""
+    """class for creating primitives."""
 
     def __init__(self, vertices: list[float], draw_mode):
         self.verticies = np.array(vertices, dtype=np.float32)
