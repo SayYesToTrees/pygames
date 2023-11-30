@@ -15,24 +15,25 @@ Dimension = namedtuple("Program", "w h")
 class Primitive(object):
     """Base class for other primitives."""
 
-    def __init__(self, vertices: list[float], draw_mode):
+    def __init__(
+        self,
+        vertices: list[float],
+        draw_mode: gl.GLenum = gl.GL_TRIANGLES,
+        vbo_usage: gl.GLenum = gl.GL_STATIC_DRAW,
+    ):
         self.verticies = np.array(vertices, dtype=np.float32)
         self.vertex_count = Dimension(*np.shape(vertices))
         self.draw_mode = draw_mode
 
-    def get_vao(self):
-        """create a vertex array object"""
         self.vao = gl.glGenVertexArrays(1)
         gl.glBindVertexArray(self.vao)
 
-    def get_vbo(self, usage: gl.GLenum = gl.GL_STATIC_DRAW):
-        """create a vertex buffer object"""
         self.vbo = gl.glGenBuffers(1)
         gl.glBindBuffer(gl.GL_ARRAY_BUFFER, self.vbo)
         gl.glBufferData(gl.GL_ARRAY_BUFFER,
                         self.verticies.nbytes,
                         self.verticies,
-                        usage)
+                        vbo_usage)
 
     def enable_vertex_atribute(
             self,
@@ -47,7 +48,6 @@ class Primitive(object):
         gl.glEnableVertexAttribArray(index)
         gl.glVertexAttribPointer(index, size, type, normalized, stride, pointer)
 
-    
     def draw(self):
         # bind the vao we made
         gl.glBindVertexArray(self.vao)

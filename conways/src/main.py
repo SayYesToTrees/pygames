@@ -26,10 +26,8 @@ class Game():
         # select shader program
         shaders = pm.build_shader_dirs()
         self.shader = shaders['default']
-        verts = [[-0.5, -0.5, 0], [0.5, -0.5, 0], [0, 0.5, 0]]
+        verts = [[-0.5, -0.5, 0], [0, 0.5, 0], [0.5, -0.5, 0]]
         self.triangle = primitives.Primitive(vertices=verts, draw_mode=GL_TRIANGLES)
-        self.triangle.get_vao()
-        self.triangle.get_vbo()
         self.triangle.enable_vertex_atribute(0, 3, GL_FLOAT, GL_FALSE, 12, ctypes.c_void_p(0))
 
     def handle_input(self):
