@@ -3,20 +3,16 @@ import pygame as pg
 from pygame.locals import QUIT, KEYDOWN, K_ESCAPE
 import program_manager as pm
 import numpy as np
-from collections import namedtuple
 
 from OpenGL.GL import *
 from OpenGL.GLU import *
 
-Dimension = namedtuple("Dimension", "w h")
 
 class Game():
-    def __init__(self, size=Dimension(1920, 1080), scale=1):
+    def __init__(self, size=(1920, 1080)):
         # set up pygame
         pg.init()
         self.viewsize = size
-        self.scale = scale
-        self.statesize = Dimension(size.w / scale, size.h / scale)
         self.clock = pg.time.Clock()
         # got to set flags and gl attributes
         self.flags = pg.OPENGL | pg.DOUBLEBUF
@@ -49,8 +45,6 @@ class Game():
             glUseProgram(self.shader)
             self.triangle.draw()
             pg.display.flip()
-
-
 
 class Triangle():
 
